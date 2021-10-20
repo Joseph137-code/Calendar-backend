@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 
 const EventoSchema = Schema({
-
     title: {
         type: String,
         required: true

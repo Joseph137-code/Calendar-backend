@@ -5,7 +5,7 @@ const generatejwt = (uid, name) => {
 
         const payload ={uid, name}
 
-        const token = jwt.sign( payload, process.env.SECRETA, {
+        jwt.sign( payload, process.env.SECRETA, {
             expiresIn: '4h'
         }, (err, token) => {
             if(err) {
@@ -15,8 +15,6 @@ const generatejwt = (uid, name) => {
 
             resolve(token);
         });
-
-        res.json({ token })
 
     })
 }
