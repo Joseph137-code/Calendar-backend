@@ -10,18 +10,18 @@ const {isDate} = require('../helper/isDate')
 
 router.use(validateJwt)
 
-router.get('/', [
+router.get('/', getEvents)
+
+router.post('/', [
     check('title','El titulo es obligatorio').not().isEmpty(),
     check('start','Fecha de inicio es obligatoria').custom( isDate ),
     check('end','Fecha de finalización es obligatoria').custom( isDate ),
     validationField
-], getEvents)
-
-router.post('/', newEvent)
+], newEvent)
 
 router.put('/:id', updateEvent)
 
-router.put('/:id', deleteEvent)
+router.delete('/:id', deleteEvent)
 
 
 module.exports = router;

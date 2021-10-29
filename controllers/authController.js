@@ -23,12 +23,13 @@ const newUser = async (req, res = response) => {
         usuario.password = bcrypt.hashSync(password, salt );
 
         await usuario.save()
+      
 
-        const token = await generatejwt(usuario.uid, usuario.name)
+        const token = await generatejwt(usuario._id, usuario.name)
 
         res.status(201).json({
             ok: true,
-            uid: usuario.id,
+            uid: usuario._id,
             name: usuario.name,
             token,
             msg: "usuario creado correctamente",
@@ -52,6 +53,7 @@ const login =  async (req, res = response) => {
 
         let usuario = await Usuario.findOne({ email });
 
+
         if(!usuario) {
             return res.status(400).json({
                 ok: false, 
@@ -67,11 +69,11 @@ const login =  async (req, res = response) => {
             });
         }
       
-        const token = await generatejwt(usuario.uid, usuario.name)
+        const token = await generatejwt(usuario._id, usuario.name)
 
         res.status(201).json({
             ok: true,
-            uid: usuario.id,
+            uid: usuario._id,
             name: usuario.name,
             token,
             msg: "Login Correcto",
@@ -89,9 +91,13 @@ const login =  async (req, res = response) => {
 const token = async(req, res = response) => {
    const uid = req.uid;
    const name = req.name;
-
    const token = await generatejwt(uid, name)
-
+    if (!token) {
+        return res.status(401).json({
+            ok: false, 
+            msg: 'No hay token' 
+        });
+    }
     res.json({
         ok: true,
         msg: "Token Generado",
